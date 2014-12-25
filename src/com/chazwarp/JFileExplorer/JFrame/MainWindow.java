@@ -5,7 +5,6 @@ package com.chazwarp.JFileExplorer.JFrame;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -28,17 +27,21 @@ import com.chazwarp.JFileExplorer.JFile;
 import com.chazwarp.JFileExplorer.JFolder;
 import com.chazwarp.JFileExplorer.Helper.IconHelper;
 import com.chazwarp.JFileExplorer.Helper.Strings;
+import com.chazwarp.JFileExplorer.Listener.AddressBarChangeListener;
 import com.chazwarp.JFileExplorer.Listener.JFileClickedListener;
+import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
 
 public class MainWindow {
 
 	static JFrame mainWindow = new JFrame("JFile Explorer");
-	static JPanel mainPanel = new JPanel(new GridLayout(2,1));
-	static JPanel textFieldPanel = new JPanel();
+	static JPanel mainPanel = new JPanel();
+	static JPanel textFieldPanel = new JPanel(new FlowLayout());
 	static JPanel buttonPanel = new JPanel(new FlowLayout());
 	static JScrollPane scrollBars = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	static Toolkit tk = Toolkit.getDefaultToolkit();
+	static Dimension screenSize = tk.getScreenSize();
 	static Object[] fileArray;
+	static File currentFolder = new File(System.getProperty("user.home"));
 	static JTextField addressBar = new JTextField();
 	static JTextField searchBar = new JTextField("Search");
 	
@@ -46,8 +49,37 @@ public class MainWindow {
 		
 		IconHelper.setWindowIcon(mainWindow, Strings.RESOURCE_LOCATION + "folder-8x.png");
 		
-		File folder = new File("C:\\Users\\Chazk_000\\Desktop\\Games");
-		File[] fileList = folder.listFiles();
+		currentFolder = new File("C:\\Users\\Chazk_000\\Desktop\\Games");
+		CreateFiles();
+		
+		Dimension tempDim = addressBar.getPreferredSize();
+		textFieldPanel.setMaximumSize(new Dimension(screenSize.width, tempDim.height));
+		buttonPanel.setPreferredSize(new Dimension(screenSize.width -8, screenSize.height));
+		addressBar.setText(currentFolder.getAbsolutePath());
+		addressBar.addActionListener(new AddressBarChangeListener());
+		addressBar.setMinimumSize(addressBar.getSize());
+		searchBar.getDocument().addDocumentListener(new SearchBarChangeListener());
+		searchBar.setMinimumSize(searchBar.getSize());
+		textFieldPanel.add(addressBar);
+		textFieldPanel.add(searchBar);
+		
+		mainPanel.add(textFieldPanel);
+		mainPanel.add(buttonPanel);
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+		scrollBars.getVerticalScrollBar().setUnitIncrement(60);
+		mainWindow.add(scrollBars);
+		
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Dimension minSize = new Dimension(screenSize.width/2, screenSize.height/2);
+		mainWindow.setMinimumSize(minSize);
+		mainWindow.setLocationRelativeTo(null);//Centers The Window
+		
+		return mainWindow;
+	}
+	
+	private static void CreateFiles() {
+		
+		File[] fileList = currentFolder.listFiles();
 		fileArray = new Object[fileList.length];
 		
 		for(int i=0; i < fileList.length; i++) {
@@ -84,26 +116,14 @@ public class MainWindow {
 				buttonPanel.add(tempFolder);
 			}
 		}
-		
-		textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.PAGE_AXIS));
-		addressBar.setText("ttt");
-		textFieldPanel.add(addressBar);
-		textFieldPanel.add(searchBar);
-		mainPanel.add(buttonPanel);
-		
-		
-		Dimension tempDim = tk.getScreenSize();
-		buttonPanel.setPreferredSize(new Dimension(tempDim.width -8, tempDim.height));
-		scrollBars.getVerticalScrollBar().setUnitIncrement(64);
-		mainWindow.add(scrollBars);
-		
-		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Dimension screenSize = tk.getScreenSize();
-		Dimension minSize = new Dimension(screenSize.width/2, screenSize.height/2);
-		mainWindow.setMinimumSize(minSize);
-		mainWindow.setLocationRelativeTo(null);//Centers The Window
-		
-		return mainWindow;
+	}
+	
+	public static Object[] GetFileArray() {
+		return fileArray;
+	}
+	
+	public static JTextField GetSearchBar() {
+		return searchBar;
 	}
 	
 	private static Icon GetFileIcon(String path) {
