@@ -5,6 +5,7 @@ package com.chazwarp.JFileExplorer.JFrame;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -26,7 +27,6 @@ import sun.awt.shell.ShellFolder;
 import com.chazwarp.JFileExplorer.JFile;
 import com.chazwarp.JFileExplorer.JFolder;
 import com.chazwarp.JFileExplorer.Helper.IconHelper;
-import com.chazwarp.JFileExplorer.Helper.Strings;
 import com.chazwarp.JFileExplorer.Listener.AddressBarChangeListener;
 import com.chazwarp.JFileExplorer.Listener.JFileClickedListener;
 import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
@@ -34,12 +34,12 @@ import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
 public class MainWindow {
 
 	static JFrame mainWindow = new JFrame("JFile Explorer");
+	static Toolkit tk = Toolkit.getDefaultToolkit();
+	static Dimension screenSize = tk.getScreenSize();
 	static JPanel mainPanel = new JPanel();
 	static JPanel textFieldPanel = new JPanel(new FlowLayout());
 	static JPanel buttonPanel = new JPanel(new FlowLayout());
-	static JScrollPane scrollBars = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-	static Toolkit tk = Toolkit.getDefaultToolkit();
-	static Dimension screenSize = tk.getScreenSize();
+	static JScrollPane scrollBars = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);	
 	static Object[] fileArray;
 	static File currentFolder = new File(System.getProperty("user.home"));
 	static JTextField addressBar = new JTextField();
@@ -47,7 +47,7 @@ public class MainWindow {
 	
 	public static JFrame CreateWindow() {
 		
-		IconHelper.setWindowIcon(mainWindow, Strings.RESOURCE_LOCATION + "folder-8x.png");
+		IconHelper.setWindowIcon(mainWindow, "/resources/" + "folder-8x.png");
 		
 		currentFolder = new File("C:\\Users\\Chazk_000\\Desktop\\Games");
 		CreateFiles();
@@ -72,7 +72,7 @@ public class MainWindow {
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension minSize = new Dimension(screenSize.width/2, screenSize.height/2);
 		mainWindow.setMinimumSize(minSize);
-		mainWindow.setLocationRelativeTo(null);//Centers The Window
+		mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
 		
 		return mainWindow;
 	}
