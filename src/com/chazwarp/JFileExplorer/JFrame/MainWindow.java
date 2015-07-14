@@ -33,6 +33,7 @@ import com.chazwarp.JFileExplorer.Listener.MainWindowChangeListener;
 import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
 import com.chazwarp.JWarpCore.File.FileHelper;
 
+@SuppressWarnings("restriction")
 public class MainWindow {
 
 	static String configDirectory;
