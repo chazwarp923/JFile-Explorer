@@ -29,10 +29,14 @@ import com.chazwarp.JFileExplorer.JFolder;
 import com.chazwarp.JFileExplorer.Helper.IconHelper;
 import com.chazwarp.JFileExplorer.Listener.AddressBarChangeListener;
 import com.chazwarp.JFileExplorer.Listener.JFileClickedListener;
+import com.chazwarp.JFileExplorer.Listener.MainWindowChangeListener;
 import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
+import com.chazwarp.JWarpCore.File.FileHelper;
 
 public class MainWindow {
 
+	static String configDirectory;
+	
 	static JFrame mainWindow = new JFrame("JFile Explorer");
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	static Dimension screenSize = tk.getScreenSize();
@@ -45,12 +49,14 @@ public class MainWindow {
 	static JTextField addressBar = new JTextField();
 	static JTextField searchBar = new JTextField("Search");
 	
-	public static JFrame CreateWindow() {
+	public static JFrame createWindow(File f) {
 		
 		IconHelper.setWindowIcon(mainWindow, "/resources/" + "folder-8x.png");
 		
-		currentFolder = new File("C:\\Users\\Chazk_000\\Desktop\\Games");
-		CreateFiles();
+		if(f != null) {
+			currentFolder = f;
+		}
+		createButtons();
 		
 		Dimension tempDim = addressBar.getPreferredSize();
 		textFieldPanel.setMaximumSize(new Dimension(screenSize.width, tempDim.height));
@@ -73,21 +79,30 @@ public class MainWindow {
 		Dimension minSize = new Dimension(screenSize.width/2, screenSize.height/2);
 		mainWindow.setMinimumSize(minSize);
 		mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
+		mainWindow.addWindowStateListener(new MainWindowChangeListener());
 		
 		return mainWindow;
 	}
 	
-	private static void CreateFiles() {
+	private static void saveToConfigFile() {
+		FileHelper.getSaveDirectory("JFileExplorer", "config.cfg");
+	}
+	
+	private static void loadFromConfigFile() {
+		FileHelper.getSaveDirectory("JFileExplorer", "config.cfg");
+	}
+	
+	private static void createButtons() {
 		
 		File[] fileList = currentFolder.listFiles();
 		fileArray = new Object[fileList.length];
 		
 		for(int i=0; i < fileList.length; i++) {
 			if(fileList[i].isFile() && !fileList[i].isHidden()) {
-				fileArray[i] = new JFile(GetFileIcon(fileList[i].getAbsolutePath()), new File(fileList[i].getAbsolutePath()));
+				fileArray[i] = new JFile(getFileIcon(fileList[i].getAbsolutePath()), new File(fileList[i].getAbsolutePath()));
 			}
 			else if(fileList[i].isDirectory()) {
-				fileArray[i] = new JFolder(GetFileIcon(fileList[i].getAbsolutePath()), new File(fileList[i].getAbsolutePath()));
+				fileArray[i] = new JFolder(getFileIcon(fileList[i].getAbsolutePath()), new File(fileList[i].getAbsolutePath()));
 			}
 		}
 		
@@ -97,7 +112,7 @@ public class MainWindow {
 				tempFile.setText(tempFile.GetName());
 				tempFile.setOpaque(false);
 				tempFile.setPreferredSize(new Dimension(120, 120));
-				tempFile.setIcon(GetResizedIcon(tempFile.GetIcon()));
+				tempFile.setIcon(getResizedIcon(tempFile.GetIcon()));
 				tempFile.addMouseListener(new JFileClickedListener());
 				tempFile.setMargin(new Insets(0,0,0,0));
 				tempFile.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -109,7 +124,7 @@ public class MainWindow {
 				tempFolder.setText(tempFolder.GetName());
 				tempFolder.setOpaque(false);
 				tempFolder.setPreferredSize(new Dimension(120, 120));
-				tempFolder.setIcon(GetResizedIcon(tempFolder.GetIcon()));
+				tempFolder.setIcon(getResizedIcon(tempFolder.GetIcon()));
 				tempFolder.setMargin(new Insets(0,0,0,0));
 				tempFolder.setVerticalTextPosition(SwingConstants.BOTTOM);
 				tempFolder.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -118,15 +133,23 @@ public class MainWindow {
 		}
 	}
 	
-	public static Object[] GetFileArray() {
+	public static Object[] getFileArray() {
 		return fileArray;
 	}
 	
-	public static JTextField GetSearchBar() {
+	public static JTextField getSearchBar() {
 		return searchBar;
 	}
 	
-	private static Icon GetFileIcon(String path) {
+	public static JPanel getButtonPanel() {
+		return buttonPanel;
+	}
+	
+	public static JPanel getMainPanel() {
+		return mainPanel;
+	}
+	
+	private static Icon getFileIcon(String path) {
 		ShellFolder sf = null;
 		try {
 			sf = ShellFolder.getShellFolder(new File(path));
@@ -138,7 +161,7 @@ public class MainWindow {
 		return icon;
 	}
 	
-	private static Icon GetResizedIcon(Icon i) {
+	private static Icon getResizedIcon(Icon i) {
 		ImageIcon tempIcon = (ImageIcon)i;
 		Image tempImage = tempIcon.getImage();
 		

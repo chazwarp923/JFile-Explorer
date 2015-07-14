@@ -29,11 +29,11 @@ public class SearchBarChangeListener implements DocumentListener {
 	}
 	
 	public void Search() {
-		JTextField source = MainWindow.GetSearchBar();
-		Object[] tempArray = MainWindow.GetFileArray();
+		JTextField source = MainWindow.getSearchBar();
+		Object[] tempArray = MainWindow.getFileArray();
 		
 		if(source.getText() != "Search" && !(source.getText().length() <= 0)) {
-			for(int i=0; i < MainWindow.GetFileArray().length; i++) {
+			for(int i=0; i < MainWindow.getFileArray().length; i++) {
 				if(tempArray[i] instanceof JFile) {
 					JFile tempFile = (JFile)tempArray[i];
 
@@ -51,7 +51,7 @@ public class SearchBarChangeListener implements DocumentListener {
 			}
 		}
 		else if(source.getText() == "Search" || source.getText().length() <= 0) {
-			for(int i=0; i < MainWindow.GetFileArray().length; i++) {
+			for(int i=0; i < MainWindow.getFileArray().length; i++) {
 				if(tempArray[i] instanceof JFile) {
 					JFile tempFile = (JFile)tempArray[i];
 					tempFile.setEnabled(true);
