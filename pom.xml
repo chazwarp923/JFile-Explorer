@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.chazwarp.JFileExplorer</groupId>
   <artifactId>JFile-Explorer</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -74,4 +74,9 @@
       <url>ftp://192.168.0.100/My Book/Chaz/maven2</url>
     </repository>
   </distributionManagement>
+  <parent>
+  	<groupId>com.chazwarp.JWarpCore</groupId>
+  	<artifactId>JWarpCore</artifactId>
+  	<version>0.1-SNAPSHOT</version>
+  </parent>
 </project>
