@@ -78,6 +78,6 @@
   	<groupId>com.chazwarp.JWarpCore</groupId>
   	<artifactId>JWarpCore</artifactId>
   	<version>0.1-SNAPSHOT</version>
-  	<relativePath></relativePath>
+  	<relativePath>../JWarpCore/pom.xml</relativePath>
   </parent>
 </project>
