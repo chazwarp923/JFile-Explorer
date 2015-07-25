@@ -53,6 +53,10 @@
   		<groupId>commons-configuration</groupId>
   		<artifactId>commons-configuration</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>com.chazwarp.JWarpCore</groupId>
+  		<artifactId>JWarpCore</artifactId>
+  	</dependency>
   </dependencies>
   <dependencyManagement>
   	<dependencies>
