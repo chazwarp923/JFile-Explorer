@@ -142,7 +142,6 @@ public class MainWindow {
 		return mainPanel;
 	}
 	
-	@SuppressWarnings("unused")
 	private static Icon getFileIcon(String path) {
 		ShellFolder sf = null;
 		try {
@@ -150,10 +149,15 @@ public class MainWindow {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		Icon icon = new ImageIcon(sf.getIcon(true), sf.getFolderType());
+		Icon icon = null;
+		try {
+			icon = new ImageIcon(sf.getIcon(true), sf.getFolderType());
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 		
 		if(icon == null) {
-			icon = new ImageIcon("/resources/file-4x.png");
+			icon = IconHelper.CreateImageIcon("/resources/file-4x.png");
 		}
 		
 		return icon;
