@@ -31,7 +31,7 @@ import com.chazwarp.JFileExplorer.Listener.AddressBarChangeListener;
 import com.chazwarp.JFileExplorer.Listener.JFileClickedListener;
 import com.chazwarp.JFileExplorer.Listener.MainWindowChangeListener;
 import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
-import com.chazwarp.JWarpCore.File.FileHelper;
+
 
 @SuppressWarnings("restriction")
 public class MainWindow {
@@ -83,14 +83,6 @@ public class MainWindow {
 		mainWindow.addWindowStateListener(new MainWindowChangeListener());
 		
 		return mainWindow;
-	}
-	
-	private static void saveToConfigFile() {
-		FileHelper.getSaveDirectory("JFileExplorer", "config.cfg");
-	}
-	
-	private static void loadFromConfigFile() {
-		FileHelper.getSaveDirectory("JFileExplorer", "config.cfg");
 	}
 	
 	private static void createButtons() {
@@ -150,6 +142,7 @@ public class MainWindow {
 		return mainPanel;
 	}
 	
+	@SuppressWarnings("unused")
 	private static Icon getFileIcon(String path) {
 		ShellFolder sf = null;
 		try {
@@ -158,6 +151,10 @@ public class MainWindow {
 			e.printStackTrace();
 		}
 		Icon icon = new ImageIcon(sf.getIcon(true), sf.getFolderType());
+		
+		if(icon == null) {
+			icon = new ImageIcon("/resources/file-4x.png");
+		}
 		
 		return icon;
 	}
