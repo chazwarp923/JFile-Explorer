@@ -49,10 +49,14 @@ public class Main {
 		mainWindow.setVisible(true);
 	}
 	
-	private static XMLConfiguration createConfig() throws ConfigurationException {
-		
+	private static XMLConfiguration createConfig() throws ConfigurationException {	
 		XMLConfiguration config = new XMLConfiguration();
-		config.save(new File(FileHelper.getSaveDirectory("JFile Explorer", "config.xml")));
+		config.setBasePath(FileHelper.getSaveDirectory("JFile Explorer"));
+		config.setFileName("config.xml");
+		
+		if(! new File(FileHelper.getSaveDirectory("JFile Explorer", "config.xml")).exists()) {
+			config.save();
+		}
 		
 		config.load();
 		

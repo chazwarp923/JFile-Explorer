@@ -22,8 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
-import sun.awt.shell.ShellFolder;
-
 import com.chazwarp.JFileExplorer.JFile;
 import com.chazwarp.JFileExplorer.JFolder;
 import com.chazwarp.JFileExplorer.Helper.IconHelper;
@@ -31,6 +29,8 @@ import com.chazwarp.JFileExplorer.Listener.AddressBarChangeListener;
 import com.chazwarp.JFileExplorer.Listener.JFileClickedListener;
 import com.chazwarp.JFileExplorer.Listener.MainWindowChangeListener;
 import com.chazwarp.JFileExplorer.Listener.SearchBarChangeListener;
+
+import sun.awt.shell.ShellFolder;
 
 
 @SuppressWarnings("restriction")
@@ -155,7 +155,6 @@ public class MainWindow {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		
 		if(icon == null) {
 			icon = IconHelper.CreateImageIcon("/resources/file-4x.png");
 		}
